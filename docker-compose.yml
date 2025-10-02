@@ -1,0 +1,30 @@
+version: '3.8'
+services:
+  backend:
+    build: ./server
+    ports:
+      - "5000:5000"
+    environment:
+      - NODE_ENV=production
+      - MONGODB_URI=mongodb://mongodb:27017/taskflow
+    depends_on:
+      - mongodb
+    volumes:
+      - ./uploads:/app/uploads
+
+  frontend:
+    build: ./client
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+  mongodb:
+    image: mongo:6.0
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+
+volumes:
+  mongodb_data:
